@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sortable Table</title>
+    <style>
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+        th {
+            cursor: pointer;
+            background-color: #f4f4f4;
+        }
+        th:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <table id="sortableTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Name</th>
+                <th onclick="sortTable(1)">Age</th>
+                <th onclick="sortTable(2)">Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John</td>
+                <td>25</td>
+                <td>USA</td>
+            </tr>
+            <tr>
+                <td>Alice</td>
+                <td>30</td>
+                <td>Canada</td>
+            </tr>
+            <tr>
+                <td>Bob</td>
+                <td>22</td>
+                <td>UK</td>
+            </tr>
+            <tr>
+                <td>Emma</td>
+                <td>28</td>
+                <td>Australia</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function sortTable(columnIndex) {
+            const table = document.getElementById("sortableTable");
+            const rows = Array.from(table.rows).slice(1); // Skip the header row
+            const isAscending = table.dataset.sortOrder !== "asc";
+
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[columnIndex].innerText;
+                const cellB = rowB.cells[columnIndex].innerText;
+
+                return isAscending
+                    ? cellA.localeCompare(cellB, undefined, { numeric: true })
+                    : cellB.localeCompare(cellA, undefined, { numeric: true });
+            });
+
+            rows.forEach(row => table.tBodies[0].appendChild(row));
+            table.dataset.sortOrder = isAscending ? "asc" : "desc";
+        }
+    </script>
+</body>
+</html>
